@@ -1,0 +1,5 @@
+name: BungeeMessage
+main: me.dandwhit.BungeeMessaging.BungeeMessage
+version: 1
+author: dandwhit
+description: Message players on any server!
