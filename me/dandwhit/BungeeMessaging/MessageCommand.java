@@ -34,12 +34,36 @@ public class MessageCommand extends Command {
                 msgBuilder.append(args[i]).append(" ");
         }
         
-        String msg = ChatColor.translateAlternateColorCodes('&', msgBuilder.toString().trim());
+        String msg = msgBuilder.toString();
         
-        p.sendMessage(new TextComponent(ChatColor.GRAY + "You have recieved the following message from " + ChatColor.GRAY + sender.getName() + ":"));
-        p.sendMessage(new TextComponent(msg));
-        sender.sendMessage(new TextComponent(ChatColor.GRAY + "You have sent the following message to " + ChatColor.GRAY + p.getName() + ":"));
-        sender.sendMessage(new TextComponent(msg));
+        boolean allowColoursInMessages = BungeeMessage.allowColoursInMessages;
+        
+        String senderTopLine = BungeeMessage.senderTopLine;
+        String senderBottomLine = BungeeMessage.senderBottomLine;
+        
+        String receiverTopLine = BungeeMessage.receiverTopLine;
+        String receiverBottomLine = BungeeMessage.receiverBottomLine;        
+        
+        senderTopLine = senderTopLine.replace("%sender%", p.getName());
+        senderTopLine = senderTopLine.replace("%reciever%", sender.getName());
+        senderBottomLine = senderBottomLine.replace("%message%", msg);
+        
+        receiverTopLine = receiverTopLine.replace("%sender%", p.getName());
+        receiverTopLine = receiverTopLine.replace("%reciever%", sender.getName());
+        receiverBottomLine = receiverBottomLine.replace("%message%", msg);
+        
+        if (allowColoursInMessages == true) {
+        	ChatColor.translateAlternateColorCodes('&', senderTopLine);
+        	ChatColor.translateAlternateColorCodes('&', senderBottomLine);
+        	
+        	ChatColor.translateAlternateColorCodes('&', receiverTopLine);
+        	ChatColor.translateAlternateColorCodes('&', receiverBottomLine);
+        }
+       
+        p.sendMessage(new TextComponent(receiverTopLine));
+        p.sendMessage(new TextComponent(receiverBottomLine));
+        sender.sendMessage(new TextComponent(senderTopLine));
+        sender.sendMessage(new TextComponent(senderBottomLine));
         
         if (BungeeMessage.lastMessage.containsKey(sender.getName())) {
         	BungeeMessage.lastMessage.remove(sender.getName());

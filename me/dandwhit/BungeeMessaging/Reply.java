@@ -31,13 +31,41 @@ public class Reply extends Command {
         for (int i = 0; i< args.length; i++) {
             message = message + args[i] + " ";
         }
-
-        message = ChatColor.stripColor(ChatColor.translateAlternateColorCodes('&', message.trim()));
         
-        target.sendMessage(new TextComponent(ChatColor.GRAY + "You have recieved the following message from " + ChatColor.GRAY + sender.getName() + ":"));
-        target.sendMessage(new TextComponent(message));
-        sender.sendMessage(new TextComponent(ChatColor.GRAY + "You have sent the following message to " + ChatColor.GRAY + target.getName() + ":"));
-        sender.sendMessage(new TextComponent(message));
+        boolean allowColoursInMessages = BungeeMessage.allowColoursInMessages;
+        
+        String senderTopLine = BungeeMessage.senderTopLine;
+        String senderBottomLine = BungeeMessage.senderBottomLine;
+        
+        String receiverTopLine = BungeeMessage.receiverTopLine;
+        String receiverBottomLine = BungeeMessage.receiverBottomLine;        
+        
+        senderTopLine = senderTopLine.replace("%sender%", target.getName());
+        senderTopLine = senderTopLine.replace("%reciever%", sender.getName());
+        senderBottomLine = senderBottomLine.replace("%message%", message);
+        
+        receiverTopLine = receiverTopLine.replace("%sender%", target.getName());
+        receiverTopLine = receiverTopLine.replace("%reciever%", sender.getName());
+        receiverBottomLine = receiverBottomLine.replace("%message%", message);
+        
+        if (allowColoursInMessages == true) {
+        	ChatColor.translateAlternateColorCodes('&', senderTopLine);
+        	ChatColor.translateAlternateColorCodes('&', senderBottomLine);
+        	
+        	ChatColor.translateAlternateColorCodes('&', receiverTopLine);
+        	ChatColor.translateAlternateColorCodes('&', receiverBottomLine);
+        } else {
+        	ChatColor.translateAlternateColorCodes('&', senderTopLine.trim());
+        	ChatColor.translateAlternateColorCodes('&', senderBottomLine.trim());
+        	
+        	ChatColor.translateAlternateColorCodes('&', receiverTopLine.trim());
+        	ChatColor.translateAlternateColorCodes('&', receiverBottomLine.trim());
+        }
+       
+        target.sendMessage(new TextComponent(receiverTopLine));
+        target.sendMessage(new TextComponent(receiverBottomLine));
+        sender.sendMessage(new TextComponent(senderTopLine));
+        sender.sendMessage(new TextComponent(senderBottomLine));
         
         if (BungeeMessage.lastMessage.containsKey(sender.getName())) {
         	BungeeMessage.lastMessage.remove(sender.getName());

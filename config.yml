@@ -1,0 +1,9 @@
+settings:
+  sender:
+    topMessage: '&a%sender% &7-> &a%receiver%:'
+    bottomMessage: '&r%message%'
+  receiver:
+    topMessage: '&a%sender% &7-> &a%receiver%:'
+    bottomMessage: '&r%message%'
+  global:
+    allowColoursInMessages: true
